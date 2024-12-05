@@ -59,9 +59,12 @@ class Qwen(LLM, ABC):
             trust_remote_code=True
         )
         self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, trust_remote_code=True)
-        self.model = AutoModelForCausalLM.from_pretrained(model_name_or_path, load_in_8bit=True, device_map='auto',
-                                               trust_remote_code=True, llm_int8_enable_fp32_cpu_offload=True
-                                               , config=model_config).eval()
+        # self.model = AutoModelForCausalLM.from_pretrained(model_name_or_path, load_in_4bit=True, device_map='auto',
+        #                                        trust_remote_code=True, llm_int8_enable_fp32_cpu_offload=True
+        #                                        , config=model_config).eval()
+        self.model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map='auto',
+                                        trust_remote_code=True
+                                        , config=model_config).eval()
 
     @property
     def _identifying_params(self) -> Mapping[str, Any]:

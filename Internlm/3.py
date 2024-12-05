@@ -28,7 +28,7 @@ from langchain.chains import SequentialChain
 from langchain.prompts import PromptTemplate
 # from ChatGLM3 import ChatGLM3
 from langchain.chains import LLMChain
-from Qwen import Qwen
+from Internlm import Internlm
 
  
 def write_unit_test(function_to_test,model_path,unit_test_package="pytest"):  
@@ -47,7 +47,7 @@ def write_unit_test(function_to_test,model_path,unit_test_package="pytest"):
         template=explain_code
     )
     # llm设置
-    explain_code_llm=Qwen()
+    explain_code_llm=Internlm()
     explain_code_llm.load_model(model_path)
     # 解释代码的LLMChain
     explain_code_step=LLMChain(llm=explain_code_llm,prompt=explain_code_template,output_key="code_explaination")
@@ -79,7 +79,7 @@ def write_unit_test(function_to_test,model_path,unit_test_package="pytest"):
     # test_plan_llm=ChatGLM3()
     # test_plan_llm.load_model(model_path)
     # test_plan_step=LLMChain(llm=test_plan_llm,prompt=test_plan_template,output_key="test_plan")
-    test_plan_llm=Qwen()
+    test_plan_llm=Internlm()
     test_plan_llm.load_model(model_path)
     test_plan_step=LLMChain(llm=test_plan_llm,prompt=test_plan_template,output_key="test_plan")
  
@@ -101,7 +101,7 @@ def write_unit_test(function_to_test,model_path,unit_test_package="pytest"):
         input_variables=["unit_test_package","function_to_test","code_explaination","test_plan","starter_comment"],
         template= explain_code + "{code_explaination}" + test_plan + "{test_plan}" + prompt_to_generate_the_unit_test
     )
-    unit_test_llm=Qwen()
+    unit_test_llm=Internlm()
     unit_test_llm.load_model(model_path)
     unit_test_step = LLMChain(llm=unit_test_llm, prompt=unit_test_template, output_key="unit_test")
  
@@ -149,5 +149,5 @@ def write_unit_test_automatically(code,model_path,retry=3):
  
  
 # 调用方法
-model_path = "/workspace/langchain-clutter/models/Qwen2.5-3B-Instruct-GPTQ-Int8"
+model_path = "/workspace/langchain-clutter/models/internlm2-chat-1_8b"
 print(write_unit_test_automatically(code,model_path=model_path))
